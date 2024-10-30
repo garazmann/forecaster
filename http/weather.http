@@ -1,0 +1,4 @@
+### GET request from highlader
+GET http://127.0.0.1:8000/weather
+Accept: text/html
+

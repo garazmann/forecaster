@@ -3,3 +3,9 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+# weather:
+#   resource: 'routes/weather.yaml'
+#   prefix: 'weather'
+#   name_prefix: 'weather_'
+
