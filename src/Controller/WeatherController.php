@@ -18,7 +18,7 @@ class WeatherController extends AbstractController
 {
     #[Route('/weather/api', name: 'app_apiweather_horalrika')]
     public function indexApi(
-        #[MapRequestPayload] ?HoralApiDTO $dto = null 
+        #[MapQueryString] ?HoralApiDTO $dto = null 
     ): Response
     {
         if (!$dto){
@@ -38,7 +38,8 @@ class WeatherController extends AbstractController
             'treshold' => $dto->treshold
         ];
 
-        return new JsonResponse($json);
+        //return new JsonResponse($json);
+        return $this->json($json);
 
     }
 
@@ -56,6 +57,10 @@ class WeatherController extends AbstractController
             $session->set('treshold', $treshold);
         } else {
             $treshold = $session->get('treshold', 50);
+            $this->addFlash(
+                'info',
+                "Treshold nastaven na $treshold"
+            );
         }
 
         $trials = $request->get('trials', 1); 

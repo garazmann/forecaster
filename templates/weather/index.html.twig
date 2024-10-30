@@ -11,6 +11,12 @@
 <div class="example-wrapper">
     <h1>Horal říká</h1>
 
+    {% for message in app.flashes('info') %}
+        <div class="flash-info">
+            Info: {{ message }}
+        </div>        
+    {% endfor %}
+
     {% for forecast in forecasts %}
         <p>{{ forecast }}</p>
         
