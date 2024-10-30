@@ -49,7 +49,8 @@ class WeatherController extends AbstractController
     public function index(
         Request $request,
         RequestStack $requestStack,
-        ?int $treshold = null
+        ?int $treshold = null,
+        #[MapQueryParameter] ?string $_format = 'html'
     ): Response
     {
         $session = $requestStack->getSession();
@@ -72,7 +73,7 @@ class WeatherController extends AbstractController
             $forecasts[] = $forecast;
         }
 
-        return $this->render('weather/index.html.twig', [
+        return $this->render("weather/index.{$_format}.twig", [
             'forecasts' => $forecasts,
             'treshold' => $treshold
         ]);
@@ -83,7 +84,7 @@ class WeatherController extends AbstractController
 
 
 
-    #[Route('/weather/{guess}')]
+    #[Route('/weather/{guess}', name: 'app_weather_hadej')]
     public function indexGuess(string $guess): Response
     {
 

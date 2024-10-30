@@ -1,0 +1,5 @@
+forecast,treshold
+{% for forecast in forecasts %}
+    {{ forecast | raw }},
+    {{- treshold }}
+{% endfor %}
