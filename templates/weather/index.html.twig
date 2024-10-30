@@ -11,14 +11,23 @@
 <div class="example-wrapper">
     <h1>Horal říká</h1>
 
-    {# <p>{{ forecast }}</p> #}
+    {% for forecast in forecasts %}
+        <p>{{ forecast }}</p>
+        
+    {% endfor %}
+
+    {% if treshold %} 
+        <p>Treshold: {{ treshold }}</p>        
+    {% endif %}
+
+    
 
     <nav>
     <a href="{{ path('app_weather_horalrika', {
         treshold: 11
     })}}">Zkusit znovu.</a>
     </nav>
-    <p>{{ countryCode }}: {{ city }}</p>
+    {# <p>{{ countryCode }}: {{ city }}</p> #}
 
 </div>
 {% endblock %}
