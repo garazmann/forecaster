@@ -52,6 +52,20 @@ class LocationRepository extends ServiceEntityRepository
         return $entity;
     }
 
+    public function findAllWithForecasts(): array
+    {
+        $qb = $this->createQueryBuilder('l');
+        $qb
+            ->select(['l', 'f']) //jen oblé závorky
+            ->leftJoin('l.forecasts', 'f')
+        ;
+
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+
+        return $result;
+    }
+
     //    /**
     //     * @return Location[] Returns an array of Location objects
     //     */

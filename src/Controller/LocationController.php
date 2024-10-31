@@ -89,18 +89,28 @@ class LocationController extends AbstractController
     public function index(
         LocationRepository $locationRepository,
     ): JsonResponse{
-        $locations = $locationRepository->findAll();
+        
+        $locations = $locationRepository->findAllWithForecasts();
 
         $json = [];
-
-        foreach ($locations as $location) {
-            $json[] = [
+        foreach ($locations as $location) 
+        {
+            $locationJson = [
                 'id' => $location->getId(),
                 'name' => $location->getName(),
                 'country' => $location->getCountryCode(),
                 'lat' => $location->getLatitude(),
                 'long' => $location->getLongitude(),
             ];
+
+            foreach ($location->getForecasts() as $forecast) {
+                $locationJson['forecasts'][$forecast->getDate()->format('Y-m-d')] = [
+                    'celsius' => $forecast->getCelsius(),
+                ];
+            }
+
+            $json[] = $locationJson;
+
         }
         return new JsonResponse($json);
 
