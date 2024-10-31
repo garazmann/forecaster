@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout_boxed.html.twig' %}
 
 {% block title %}Horal{% endblock %}
 
-{% block body %}
+{% block content %}
 
     <h1>Horal říká</h1>
 
@@ -39,5 +39,6 @@
     <script>
         const route = "{{ url('app_weather_horalrika')|escape('js') }}";
         console.log(route);
+        console.log("{{ api_key|escape('js') }}");
     </script>
 {% endblock %}
