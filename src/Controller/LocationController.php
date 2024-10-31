@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Location;
 use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -57,6 +58,43 @@ class LocationController extends AbstractController
         $locationRepository->remove($location, true);
 
         return new JsonResponse(null);
+
+    }
+
+    #[Route('/show/{id}', name: 'app_location_show')]
+    public function show(
+        #[MapEntity(mapping: ['location_name' => 'name'])]
+        Location $location,
+    ): JsonResponse
+    {
+
+        return new JsonResponse([
+            'id' => $location->getId(),
+            'name' => $location->getName(),
+            'country' => $location->getCountryCode(),
+            'lat' => $location->getLatitude(),
+            'long' => $location->getLongitude(),
+            ]);
+    }
+
+    #[Route('/', name: 'app_location_index')]
+    public function index(
+        LocationRepository $locationRepository,
+    ): JsonResponse{
+        $locations = $locationRepository->findAll();
+
+        $json = [];
+
+        foreach ($locations as $location) {
+            $json[] = [
+                'id' => $location->getId(),
+                'name' => $location->getName(),
+                'country' => $location->getCountryCode(),
+                'lat' => $location->getLatitude(),
+                'long' => $location->getLongitude(),
+            ];
+        }
+        return new JsonResponse($json);
 
     }
 
