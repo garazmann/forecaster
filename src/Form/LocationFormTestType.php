@@ -23,6 +23,7 @@ class LocationFormTestType extends AbstractType
                     'Poland' => 'PL',
                     'Germany' => 'DE',
                     'France' => 'FR',
+                    'India' => 'IN',
                     'Czechia' => 'CZ',
                     'United Kingdom' => 'UK',
                     'United States' => 'US',

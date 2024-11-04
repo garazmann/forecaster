@@ -1,0 +1,35 @@
+App\Entity\Location:
+  properties:
+    name:
+      - NotBlank:
+          message: "Location name must be specified"
+          groups: ['new', 'edit']
+      - Length:
+          max: 255
+          maxMessage: "The length of location name cannot exceed {{ limit }} characters"
+          groups: ['new', 'edit']
+    countryCode:
+      - NotBlank:
+          groups: ['new', 'edit']
+    latitude:
+      - NotBlank:
+          groups: ['new', 'edit']
+      - Range:
+          min: -90
+          max: 90
+          notInRangeMessage: "The latitude must be between {{ min }} and {{ max }} degrees"
+          groups: ['new', 'edit']
+      - NotEqualTo:
+          value: 0
+          groups: ['edit']
+    longitude:
+      - NotBlank:
+          groups: ['new', 'edit']
+      - Range:
+          min: -180
+          max: 180
+          notInRangeMessage: "The longitude must be between {{ min }} and {{ max }} degrees"
+          groups: ['new', 'edit']
+      - NotEqualTo:
+          value: 0
+          groups: ['edit']
