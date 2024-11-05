@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\HoralApiDTO;
+use App\Service\Highlander;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,7 @@ class WeatherController extends AbstractController
 {
     #[Route('/weather/api', name: 'app_apiweather_horalrika')]
     public function indexApi(
+        Highlander $highlander,
         #[MapQueryString] ?HoralApiDTO $dto = null 
     ): Response
     {
@@ -27,11 +29,7 @@ class WeatherController extends AbstractController
             $dto->trials = 1;
         }
 
-        for ($i=0; $i < $dto->trials; $i++) { 
-            $draw = random_int(0, 100);
-            $forecast = $draw < $dto->treshold ? 'Bude pršet' : 'Bude svítit sluníčko';
-            $forecasts[] = $forecast;
-        }
+        $forecasts = $highlander->say($dto->treshold, $dto->trials);
 
         $json = [
             'forecasts' => $forecasts,
@@ -49,6 +47,7 @@ class WeatherController extends AbstractController
     public function index(
         Request $request,
         RequestStack $requestStack,
+        Highlander $highlander,
         ?int $treshold = null,
         #[MapQueryParameter] ?string $_format = 'html'
     ): Response
@@ -64,14 +63,8 @@ class WeatherController extends AbstractController
             );
         }
 
-        $trials = $request->get('trials', 1); 
-        $forecasts = [];
-
-        for ($i=0; $i < $trials; $i++) { 
-            $draw = random_int(0, 100);
-            $forecast = $draw < $treshold ? 'Bude pršet' : 'Bude svítit sluníčko';
-            $forecasts[] = $forecast;
-        }
+        $trials = (int) $request->get('trials', 1); 
+        $forecasts = $highlander->say($treshold, $trials);
 
         return $this->render("weather/index.{$_format}.twig", [
             'forecasts' => $forecasts,
